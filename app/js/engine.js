@@ -61,43 +61,35 @@
   };
   BS.view = (w, h) => { const s = Math.min(w / BS.W, h / BS.H); return { s, ox: (w - BS.W * s) / 2, oy: (h - BS.H * s) / 2 }; };
 
-  // Primer-style blob: ground shadow, soft body with highlight, two eyes that blink,
-  // optional angry V-brows (aggressive types) or a small smile (peaceful types).
-  BS.blob = (ctx, x, y, r, fill, o = {}) => {
-    if (r >= 5 && o.shadow !== false) {
-      ctx.fillStyle = 'rgba(0,0,0,.13)';
-      ctx.beginPath(); ctx.ellipse(x, y + r * .9, r * .78, r * .2, 0, 0, 6.2832); ctx.fill();
-    }
-    ctx.fillStyle = fill;
-    ctx.beginPath(); ctx.ellipse(x, y + r * .05, r, r * .9, 0, 0, 6.2832); ctx.fill();
-    if (r < 3.5) return;
-    if (r >= 7) {
-      ctx.fillStyle = 'rgba(255,255,255,.22)';
-      ctx.beginPath(); ctx.ellipse(x - r * .38, y - r * .42, r * .3, r * .16, -.5, 0, 6.2832); ctx.fill();
-    }
-    const e = r * .19, ex = r * .36, ey = y - r * .12, lx = (o.look || 0) * e * .5;
-    ctx.strokeStyle = ctx.fillStyle = '#141a21'; ctx.lineCap = 'round';
-    if (o.blink) {
-      ctx.lineWidth = Math.max(1, r * .1);
-      ctx.beginPath(); ctx.moveTo(x - ex - e, ey); ctx.lineTo(x - ex + e, ey); ctx.moveTo(x + ex - e, ey); ctx.lineTo(x + ex + e, ey); ctx.stroke();
-    } else {
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath(); ctx.arc(x - ex, ey, e * 1.3, 0, 6.2832); ctx.arc(x + ex, ey, e * 1.3, 0, 6.2832); ctx.fill();
-      ctx.fillStyle = '#141a21';
-      ctx.beginPath(); ctx.arc(x - ex + lx, ey, e * .72, 0, 6.2832); ctx.arc(x + ex + lx, ey, e * .72, 0, 6.2832); ctx.fill();
-    }
-    if (o.angry) {
-      ctx.lineWidth = Math.max(1.2, r * .15);
+  // Tab icon: the 3D blob in miniature. Soft contact shadow, a 3-band toon body lit from
+  // the upper left, a hairline outline and two small eyes. Aggressive types get narrowed eyes.
+  const mix = (c, t) => { // t < 0 darkens toward black, t > 0 lightens toward white
+    if (c[0] !== '#' || c.length !== 7) return c;
+    const v = [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16)).map(x => Math.round(t < 0 ? x * (1 + t) : x + (255 - x) * t));
+    return 'rgb(' + v.join(',') + ')';
+  };
+  BS.icon = (ctx, x, y, r, fill, o = {}) => {
+    ctx.fillStyle = 'rgba(0,0,0,.14)';
+    ctx.beginPath(); ctx.ellipse(x + r * .1, y + r * .86, r * .8, r * .16, 0, 0, 6.2832); ctx.fill();
+    ctx.save();
+    ctx.beginPath(); ctx.ellipse(x, y, r, r * .9, 0, 0, 6.2832); ctx.clip();
+    ctx.fillStyle = mix(fill, -.24); ctx.fillRect(x - r, y - r, r * 2, r * 2);
+    ctx.fillStyle = fill; ctx.beginPath(); ctx.ellipse(x - r * .16, y - r * .14, r * .98, r * .84, 0, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = mix(fill, .16); ctx.beginPath(); ctx.ellipse(x - r * .44, y - r * .46, r * .46, r * .32, -.5, 0, 6.2832); ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = 'rgba(27,39,51,.45)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.ellipse(x, y, r - .5, r * .9 - .5, 0, 0, 6.2832); ctx.stroke();
+    const ex = r * .34, ey = y - r * .1, ew = r * .17, eh = r * .22 * (o.angry ? .72 : 1);
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.ellipse(x - ex, ey, ew, eh, 0, 0, 6.2832); ctx.ellipse(x + ex, ey, ew, eh, 0, 0, 6.2832); ctx.fill();
+    ctx.fillStyle = '#141a21';
+    ctx.beginPath(); ctx.ellipse(x - ex + r * .03, ey + r * .02, ew * .55, eh * .6, 0, 0, 6.2832); ctx.ellipse(x + ex - r * .03, ey + r * .02, ew * .55, eh * .6, 0, 0, 6.2832); ctx.fill();
+    if (o.angry) { // a thin lid line, tilted inward
+      ctx.strokeStyle = '#141a21'; ctx.lineWidth = Math.max(1, r * .09); ctx.lineCap = 'round';
       ctx.beginPath();
-      ctx.moveTo(x - ex - e * 1.5, ey - e * 2.5); ctx.lineTo(x - ex + e * 1.2, ey - e * 1.3);
-      ctx.moveTo(x + ex + e * 1.5, ey - e * 2.5); ctx.lineTo(x + ex - e * 1.2, ey - e * 1.3);
+      ctx.moveTo(x - ex - ew, ey - eh * 1.25); ctx.lineTo(x - ex + ew, ey - eh * .7);
+      ctx.moveTo(x + ex + ew, ey - eh * 1.25); ctx.lineTo(x + ex - ew, ey - eh * .7);
       ctx.stroke();
-    } else if (o.smile && r >= 6) {
-      ctx.lineWidth = Math.max(1, r * .09);
-      ctx.beginPath(); ctx.arc(x, y + r * .2, r * .2, .35, Math.PI - .35); ctx.stroke();
-    } else if (o.frown && r >= 5) {
-      ctx.lineWidth = Math.max(1, r * .09);
-      ctx.beginPath(); ctx.arc(x, y + r * .48, r * .2, Math.PI + .45, -.45); ctx.stroke();
     }
   };
 

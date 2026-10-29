@@ -18,7 +18,7 @@ BS.startApp = function (R) {
     document.querySelectorAll('.tab canvas').forEach((cv, i) => {
       const { ctx, w, h } = BS.fit(cv);
       ctx.clearRect(0, 0, w, h);
-      BS.blob(ctx, w / 2, h / 2 + 1, Math.min(w, h) * .4, BS.col(sims[i].accent), { angry: sims[i].iconAngry, smile: !sims[i].iconAngry, shadow: false });
+      BS.icon(ctx, w / 2, h / 2 - 1, Math.min(w, h) * .4, BS.col(sims[i].accent), { angry: sims[i].iconAngry });
     });
   }
   $('tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (b) select(b.dataset.id, true); });

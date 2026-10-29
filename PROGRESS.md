@@ -29,9 +29,9 @@
 - **Browser test:** it loads `app/index.html` directly and finds Chrome on macOS, Linux or Windows (or `CHROME=`).
 - **Docs:** the brief for adding a world is now [docs/ADDING_A_WORLD.md](docs/ADDING_A_WORLD.md). The scope page moved to `docs/`.
 - **Checks:** `npm test` passes all 6 suites, and the full browser run covers 11 worlds × 3 widths × 2 themes.
+- **Tab icons:** they now match the 3D blobs: toon shading lit from the upper left, a hairline outline, a contact shadow and two small eyes. The smiles and big V-brows are gone. Hawks & Doves keeps narrowed eyes with a thin lid line.
 
 ## Open
 - Segregation is hard to read on a phone: the camera could come closer, or the cells could be bigger.
-- The 2D tab icons still have large cartoon faces next to the calmer 3D blobs.
 - The hook title cards make claims that the model tests do not check yet.
 - The test that the 3D world is not blank has not been proven against a deliberately blank canvas.
