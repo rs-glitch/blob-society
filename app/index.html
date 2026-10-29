@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Blob Society</title>
+<meta name="description" content="Eleven calm 3D island worlds where simple blobs show how fights, trust, wealth, opinions, markets and disease follow from a few rules. Every story claim is checked by automated tests.">
+<meta property="og:title" content="Blob Society">
+<meta property="og:description" content="Eleven 3D blob worlds of game theory and social science, with tested story claims.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="css/app.css">
+<style>[hidden]{display:none!important}</style>
+</head>
+<body>
+<canvas id="gl" aria-label="3D world. Drag to turn, scroll or pinch to zoom."></canvas><div id="labels" aria-hidden="true"></div>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 34 34" aria-hidden="true"><ellipse cx="17" cy="18" rx="15" ry="13.5" fill="var(--accent)"/><circle cx="12.5" cy="16" r="2" fill="#fff"/><circle cx="21.5" cy="16" r="2" fill="#fff"/></svg>
+      <div><b>Blob Society</b><span>Simple rules, social outcomes</span></div>
+    </div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Choose a world"></div>
+  </header>
+
+  <main class="hud" id="panel" role="tabpanel">
+    <section class="stage" aria-label="Simulation">
+      <div class="head">
+        <h1 id="question"></h1>
+        <span class="daytag" id="daytag" aria-hidden="true">day 0</span>
+      </div>
+      <div class="arena-wrap">
+        <div class="hook" id="hook" aria-hidden="true"><span class="eyebrow" id="hookTopic"></span><p class="hook-t" id="hookTitle"></p><p class="hook-k" id="hookKick"></p></div>
+        <div class="banner" id="banner" role="alert" hidden><p id="bannerText"></p><div><button class="btn" id="bannerKeep">Keep running</button><button class="btn primary" id="bannerNext">Next chapter →</button></div></div>
+      </div>
+      <section class="storybar" aria-labelledby="chapTitle">
+        <div class="txt">
+          <div class="chaprow"><span class="eyebrow" id="chapCount">Chapter 1 of 4</span><span class="progress" id="progress" aria-hidden="true"></span></div>
+          <h2 id="chapTitle"></h2>
+          <p id="story"></p>
+        </div>
+        <div class="nav"><button class="btn" id="edgeBtn" aria-controls="knobsPanel">Edge cases</button><button class="btn" id="prev">← Back</button><button class="btn primary" id="next">Next →</button></div>
+      </section>
+      <div class="controls" role="group" aria-label="Playback">
+        <button class="btn primary" id="play"><svg viewBox="0 0 14 14" aria-hidden="true"><path id="playIcon" d="M3 2h3v10H3zM8 2h3v10H8z"/></svg><span>Pause</span></button>
+        <button class="btn" id="step"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l7 5-7 5zM10 2h2v10h-2z"/></svg>Step</button>
+        <button class="btn" id="reset"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2.2V0L3.6 3 7 6V3.8A3.7 3.7 0 1 1 3.3 7.5H1.7A5.3 5.3 0 1 0 7 2.2z"/></svg>Reset</button>
+        <button class="btn" id="reseed">New run</button>
+        <label class="speed" for="speed">speed <input type="range" id="speed" min="0" max="8" step="1" value="2"><output id="speedOut" for="speed">1 day/s</output></label>
+        <button class="btn gold" id="drawerBtn" aria-expanded="false" aria-controls="knobsPanel">Tweak the world</button>
+      </div>
+    </section>
+
+    <aside class="data" aria-label="Results">
+      <div class="kpis" id="kpis"></div>
+      <section class="card plot" aria-labelledby="chartH">
+        <h2 class="ph" id="chartH">Over time</h2>
+        <div class="chart-wrap"><canvas id="chart" tabindex="0" aria-label="Population chart over time. Use the left and right arrow keys to read values."></canvas><div class="tip" id="tip" hidden></div></div>
+        <div class="legend" id="chartLegend"></div>
+        <p class="insight" id="insight"></p>
+      </section>
+    </aside>
+
+    <aside class="side" id="knobsPanel" role="dialog" aria-label="Tweak the world">
+      <button class="btn drawer-close" id="drawerClose" type="button">Close ✕</button>
+      <section aria-labelledby="presetsH" id="presetsBox">
+        <h2 class="ph" id="presetsH">Edge cases</h2>
+        <div class="presets" id="presets"></div>
+      </section>
+      <section aria-labelledby="knobsH">
+        <h2 class="ph" id="knobsH">Knobs</h2>
+        <p class="reset-note">↺ = this knob restarts the run.</p>
+        <div id="knobs"></div>
+      </section>
+      <section aria-labelledby="storyH">
+        <h2 class="ph" id="storyH">All chapters</h2>
+        <ol class="chapters" id="chapters"></ol>
+      </section>
+      <section class="card" id="extraBox" aria-labelledby="extraTitle">
+        <h2 class="ph" id="extraTitle"></h2>
+        <div id="extraHTML"></div>
+        <canvas id="extra" hidden aria-hidden="true"></canvas>
+      </section>
+      <section aria-labelledby="aboutH">
+        <h2 class="ph" id="aboutH">About this world</h2>
+        <span class="eyebrow" id="topic"></span>
+        <div class="legend" id="legend"></div>
+        <p class="src" id="source"></p>
+        <p class="keys"><kbd>Space</kbd> play or pause · <kbd>→</kbd> step · <kbd>R</kbd> reset (same seed: the run repeats) · seed <span id="seed">1</span></p>
+        <p class="foot">Inspired by <a href="https://www.youtube.com/@PrimerBlobs">Primer</a> and Nicky Case’s <a href="https://ncase.me/trust/">The Evolution of Trust</a>; independent work, not affiliated. These are stylized models for learning, not forecasts. Every chapter claim is checked by an automated model test over several random seeds.</p>
+      </section>
+    </aside>
+  </main>
+  <p class="sr" id="status" role="status"></p>
+</div>
+
+<script src="js/engine.js"></script>
+<script src="js/sims/hawkdove.js"></script>
+<script src="js/sims/trust.js"></script>
+<script src="js/sims/rps.js"></script>
+<script src="js/sims/wealth.js"></script>
+<script src="js/sims/segregation.js"></script>
+<script src="js/sims/opinions.js"></script>
+<script src="js/sims/commons.js"></script>
+<script src="js/sims/natsel.js"></script>
+<script src="js/sims/market.js"></script>
+<script src="js/sims/voting.js"></script>
+<script src="js/sims/epidemic.js"></script>
+<script src="js/app.js"></script>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/" } }</script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "blob-society",
+  "private": true,
+  "description": "3D blob worlds that show game theory, economics and epidemics from simple rules, with tested story claims.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node app/tests/model.test.js && node app/tests/model2.test.js && node app/tests/model_natsel.test.js && node app/tests/model_market.test.js && node app/tests/model_voting.test.js && node app/tests/model_presets.test.js",
+    "test:browser": "node app/tests/browser.test.js"
+  },
+  "devDependencies": {
+    "puppeteer-core": "23.11.1"
+  }
+}

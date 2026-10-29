@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Blob Society Scope</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: field-guide catalogue. Live blob arena hero, then filterable sim cards, then dashboard plan. */
+:root{
+  --bg:#eef3f7; --paper:#ffffff; --ink:#18232e; --mute:#566472; --line:#d3dde6;
+  --blue:#2f7ff0; --orange:#f08a24; --green:#22a565; --pink:#e0457b; --violet:#7a5af0;
+  --chip:#e3ebf2;
+  --f-disp:"Bricolage Grotesque",ui-rounded,system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f161d; --paper:#17212b; --ink:#e6edf3; --mute:#9aa8b5; --line:#2a3744;
+  --blue:#5c9cff; --orange:#ffa04a; --green:#3fcf86; --pink:#ff6b9a; --violet:#9b84ff; --chip:#22303d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f161d; --paper:#17212b; --ink:#e6edf3; --mute:#9aa8b5; --line:#2a3744;
+  --blue:#5c9cff; --orange:#ffa04a; --green:#3fcf86; --pink:#ff6b9a; --violet:#9b84ff; --chip:#22303d; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px;display:grid;gap:40px}
+h1,h2,h3{font-family:var(--f-disp);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:800}
+h3{font-size:1.12rem;font-weight:800}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
+.hero>div{min-width:0;display:grid;gap:14px}
+.lede{font-size:1.06rem;color:var(--mute);max-width:60ch}
+#arena{width:100%;aspect-ratio:4/3;max-width:100%;background:var(--paper);border:1px solid var(--line);border-radius:22px;display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--f-mono);font-size:.75rem;color:var(--mute)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.formula{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.formula div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:4px}
+.formula b{font-family:var(--f-disp);font-size:1rem}
+.formula span{color:var(--mute);font-size:.9rem}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bar button{font:600 .82rem var(--f-mono);border:1px solid var(--line);background:var(--chip);color:var(--ink);padding:7px 12px;border-radius:999px;cursor:pointer}
+.bar button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bar button:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.count{font-family:var(--f-mono);font-size:.8rem;color:var(--mute);margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.top{display:flex;gap:10px;align-items:center}
+.num{font:600 .78rem var(--f-mono);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.q{font-size:.95rem;font-style:italic;color:var(--mute)}
+dl{margin:0;display:grid;grid-template-columns:72px 1fr;gap:6px 10px;font-size:.88rem}
+dt{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);padding-top:2px}
+dd{margin:0;min-width:0}
+.knobs{display:flex;flex-wrap:wrap;gap:5px}
+.knobs code{font-family:var(--f-mono);font-size:.74rem;background:var(--chip);padding:2px 7px;border-radius:6px}
+.aha{border-top:1px dashed var(--line);padding-top:10px;font-size:.9rem}
+.aha b{font-family:var(--f-disp)}
+.meta{display:flex;gap:6px;flex-wrap:wrap;font-family:var(--f-mono);font-size:.7rem}
+.meta span{border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--mute)}
+.meta .src{color:var(--ink)}
+.meta .new{border-color:var(--violet);color:var(--violet)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:14px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:620px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--mute)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.two>div{min-width:0}
+ol,ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.wf text{font-family:var(--f-mono);font-size:11px;fill:var(--mute)}
+.wf .t{fill:var(--ink);font-weight:600}
+.wf rect{fill:var(--bg);stroke:var(--line)}
+.foot{font-size:.82rem;color:var(--mute)}
+.foot a{color:var(--blue)}
+@media (max-width:800px){.hero,.two{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){#arena{opacity:.95}}
+</style>
+<style>body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div>
+    <span class="eyebrow">Scope · 20 simulations · inspired by Primer</span>
+    <h1>Blob Society: 20 mini worlds with few rules and big lessons</h1>
+    <p class="lede">Primer uses simple blobs with two or three rules to show how evolution, game theory and markets work. This page scopes 20 simulations for one dashboard app. Each one has one question, a few knobs and one surprise that the viewer can see.</p>
+    <div class="legend"><span><i style="background:var(--blue)"></i>dove</span><span><i style="background:var(--orange)"></i>hawk</span><span><i style="background:var(--green)"></i>food</span><span id="stat">day 0</span></div>
+  </div>
+  <canvas id="arena" width="640" height="480" aria-label="Live demo: hawk and dove blobs compete for food pairs each day"></canvas>
+</header>
+
+<section style="display:grid;gap:14px">
+  <span class="eyebrow">What makes a Primer simulation work (from 23 videos)</span>
+  <div class="formula">
+    <div><b>One question</b><span>Each video asks one thing, for example "Why does aging exist?"</span></div>
+    <div><b>2–3 rules</b><span>Blobs eat, copy themselves, or die. One payoff table or one rate drives the result.</span></div>
+    <div><b>Build up in steps</b><span>Start with 1 blob, then add a mutation or a rival. Each step adds one variable.</span></div>
+    <div><b>Sim and chart together</b><span>The arena shows single blobs. The chart shows the population. The viewer links both.</span></div>
+    <div><b>Theory check</b><span>The sim result is compared to the formula: V/C, R₀, Hamilton's rule, equilibrium price.</span></div>
+    <div><b>Break it on purpose</b><span>Change one knob until the result flips. This shows the true mechanism.</span></div>
+  </div>
+</section>
+
+<section style="display:grid;gap:14px">
+  <h2>The 20 simulations</h2>
+  <div class="bar" role="group" aria-label="Filter by theme">
+    <button data-f="all" aria-pressed="true">All</button>
+    <button data-f="evo">Evolution &amp; life</button>
+    <button data-f="game">Game theory</button>
+    <button data-f="soc">Society &amp; economy</button>
+    <button data-f="info">Disease &amp; inference</button>
+    <button data-f="new">New (not in Primer)</button>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="panel">
+  <h2>One dashboard, one engine</h2>
+  <p class="foot" style="font-size:.92rem">All 20 sims use one shell and one agent engine. Each sim is a small plug-in file with its rules, knobs, chart and theory line.</p>
+  <div class="scroll">
+  <svg class="wf" viewBox="0 0 760 300" width="100%" style="min-width:560px" role="img" aria-label="Wireframe of the dashboard layout">
+    <rect x="4" y="4" width="752" height="34" rx="8"/><text x="16" y="26" class="t">Sim picker: 20 tiles in 4 themes</text><text x="520" y="26">play · pause · step · speed · reset</text>
+    <rect x="4" y="46" width="180" height="250" rx="8"/><text x="16" y="68" class="t">Knobs (2–4)</text><text x="16" y="92">sliders + presets</text><text x="16" y="112">seed lock</text><text x="16" y="132">"break it" preset</text><text x="16" y="172" class="t">Chapters</text><text x="16" y="194">1 · base case</text><text x="16" y="212">2 · add a rival</text><text x="16" y="230">3 · flip the result</text><text x="16" y="248">4 · real-world link</text>
+    <rect x="192" y="46" width="330" height="250" rx="8"/><text x="204" y="68" class="t">Arena (canvas, up to 2000 blobs)</text><text x="204" y="92">hover a blob: its strategy, energy, age</text><text x="204" y="112">click: follow one blob</text>
+    <rect x="530" y="46" width="226" height="120" rx="8"/><text x="542" y="68" class="t">Live chart</text><text x="542" y="90">population share over time</text><text x="542" y="108">dashed line = theory value</text>
+    <rect x="530" y="174" width="226" height="122" rx="8"/><text x="542" y="196" class="t">Insight card</text><text x="542" y="218">KPI tiles (e.g. Gini, R₀)</text><text x="542" y="236">"what you just saw" text</text><text x="542" y="254">compare A/B runs</text>
+  </svg>
+  </div>
+  <div class="two">
+    <div><h3 style="margin-bottom:8px">Engine (shared)</h3><ul>
+      <li>Agent = position, type, energy, age, genome (few numbers).</li>
+      <li>Day loop: move → meet → payoff → reproduce or die → mutate.</li>
+      <li>Two modes: well-mixed (random pairs) and spatial grid (neighbours).</li>
+      <li>Seeded random numbers, so a run can repeat exactly.</li>
+      <li>Optional ODE overlay for the theory curve (SIR, replicator, logistic).</li>
+    </ul></div>
+    <div><h3 style="margin-bottom:8px">Proposed build order</h3><ol>
+      <li>Engine + shell + 4 flagship sims: #6 Hawk–Dove, #11 Prisoner's Dilemma, #14 Wealth, #19 Epidemic.</li>
+      <li>Rest of game theory (#7–#10, #12) — they reuse the payoff-matrix module.</li>
+      <li>Society and economy (#13, #15–#18).</li>
+      <li>Evolution and inference (#1–#5, #20), then polish and phone layout.</li>
+    </ol></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Primer catalogue studied</h2>
+  <p class="foot" style="font-size:.92rem">23 videos on the channel listing. The table shows how each maps to the scope. Videos with no sim (essays, AI risk) are not used.</p>
+  <div class="scroll"><table><thead><tr><th>Primer video</th><th>Core idea</th><th>Used in</th></tr></thead><tbody id="cat"></tbody></table></div>
+</section>
+
+<p class="foot">Sources: <a href="https://www.youtube.com/@PrimerBlobs">Primer on YouTube</a>; channel video list via <a href="https://rosetta.to/u/primerblobs">rosetta.to/u/primerblobs</a>. Non-Primer models: Axelrod (1984) <i>The Evolution of Cooperation</i>; Fehr &amp; Gächter (2000) public goods with punishment; Hayes (2002) / Boghosian yard-sale wealth model; Schelling (1971) segregation; Hardin (1968) and Ostrom (1990) commons; Deffuant et al. (2000) bounded-confidence opinions. The hero animation is a simple Hawk–Dove demo (V = 2 food, C = 3), not a final design.</p>
+</div>
+
+<script>
+const C={evo:'var(--green)',game:'var(--orange)',soc:'var(--blue)',info:'var(--pink)'};
+const S=[
+// theme, title, question, agents/rules, knobs, aha, charts, source, isNew, size
+['evo','Birth, death and existence','Why do some things exist and others vanish?','Blobs copy themselves with chance b and die with chance d each day.',['birth b','death d','start count'],'If b is only a bit larger than d, numbers explode. If smaller, they go extinct. Small groups can die out by bad luck even when b > d.','Population line (log scale); extinction count over 100 runs','Why do things exist? · How life grows exponentially',0,'S'],
+['evo','Crowding and competition','Why does growth stop, and who wins a shared space?','Death chance rises with crowd size. Two blob colours share one food pool.',['crowding factor','birth rate per type','mutation rate'],'Growth bends into an S curve at a carrying capacity. With two types, the one with the higher capacity takes over (competitive exclusion).','Stacked area by type; logistic curve overlay','Simulating Competition and Logistic Growth · Mutations and the First Replicators',0,'S'],
+['evo','Natural selection of traits','Which body wins: fast, big or sharp-eyed?','Blobs search for food. Energy cost = size³·speed² + sense. Eat 2 food to copy (with mutation).',['food per day','mutation size','trait costs'],'With scarce food, slow and cheap blobs win. With large prey, big blobs win. The best trait depends on the world.','Trait histograms over time; 3D trait scatter','Simulating Natural Selection',0,'M'],
+['evo','Why we age','Why did evolution not remove aging?','Each blob carries genes that act at a set age. Danger kills blobs at random (extrinsic risk).',['extrinsic death rate','gene effect age','pleiotropy on/off'],'Selection is weak at old age because few blobs live that long. Late-acting bad genes build up. High danger gives faster aging.','Survival curve; gene count by age of action','Simulating the Evolution of Aging',0,'M'],
+['evo','Foraging and trade','How much fruit vs. how many nuts? When does trading pay?','Each blob splits its day between two foods. Utility has diminishing returns. Two blobs can trade.',['skill ratio','trade on/off','utility curve'],'Each blob reaches a best mix on its frontier. With trade, both blobs gain, even when one is better at both jobs (comparative advantage).','Production frontier with chosen point; utility before/after trade','Simulating Foraging Decisions',0,'S'],
+['game','Hawks and doves','Why do fights not take over?','Pairs meet at food. Hawk vs dove: hawk takes all. Hawk vs hawk: both pay cost C.',['food value V','fight cost C','start hawk share'],'The hawk share settles at V/C, not at 0 % or 100 %. This is a mixed evolutionarily stable state.','Hawk share with dashed V/C line; payoff matrix heat map','Simulating the Evolution of Aggression',0,'S'],
+['game','Rock, paper, scissors','What if no strategy is best?','Each type beats one type and loses to one. Well-mixed or on a grid.',['payoff gain','mutation rate','spatial vs mixed'],'The shares cycle forever. On a grid, the types form rotating spirals. Mutation can damp the cycles to a balance.','Ternary-plot orbit; spiral grid view','Simulating the Evolution of Rock, Paper, Scissors',0,'M'],
+['game','Teamwork (stag hunt)','Why can a group stay stuck in a bad habit?','Hunt a stag together (big prize, needs a partner) or a hare alone (small, safe).',['stag value','hare value','start team share'],'There are two stable states. The start point decides the end. A small push past a tipping point flips the whole group.','Basin-of-attraction bar; share over time','Simulating the Evolution of Teamwork',0,'S'],
+['game','Green-beard altruism','Can a gene help copies of itself?','Blobs with a visible beard help other bearded blobs at a cost.',['help benefit b','help cost c','fake beards on/off'],'Altruism spreads while the beard and the helping gene stay linked. Fake beards (signal without help) make it collapse.','Share of helpers, beards and fakes','Simulating Green Beard Altruism',0,'S'],
+['game',"Family sacrifice (Hamilton's rule)",'When does helping relatives pay for a gene?','Blobs live in families. A helper pays c so a relative gains b.',['relatedness r','benefit b','cost c'],'Helping spreads only when r·b > c. The sim line crosses exactly at the formula.','Helper share vs r·b − c sweep; family tree view','Simulating the Evolution of Sacrificing for Family',0,'M'],
+['game',"Prisoner's dilemma tournament",'How can trust grow among selfish players?','Pairs play many rounds of cooperate/cheat. Strategies: Tit-for-Tat, Always Cheat, Grudger, Generous TFT…',['rounds per match','noise (mistakes)','strategy mix'],'Nice but firm strategies win in long games. With noise, Tit-for-Tat feuds; forgiving strategies win.','Strategy share over generations; match replay','Axelrod (1984)',1,'M'],
+['game','Public goods and punishment','Why do shared projects fail, and what saves them?','Groups put money in a pot. The pot is multiplied and shared. Some blobs pay to fine free riders.',['multiplier','fine size','punish cost'],'Without fines, giving falls to near zero. Cheap punishment keeps giving high, but someone must pay for it.','Mean contribution per round; punisher share','Fehr & Gächter (2000)',1,'M'],
+['soc','Supply and demand','How does a fair price appear with no boss?','Buyers have max prices. Sellers have min prices. They meet at random and adjust their offers.',['buyer count','seller count','value spread'],'Prices converge to where the supply and demand curves cross. Taxes or price caps make lost trades (deadweight loss) visible.','Price scatter over time; supply/demand curves; surplus area','Simulating Supply and Demand',0,'M'],
+['soc','Wealth: the yard-sale model','Can fair random trades make extreme inequality?','Pairs flip a fair coin. The loser gives a fixed share of the poorer blob\'s wealth.',['bet fraction','wealth tax','start equality'],'With no tax, almost all wealth ends with one blob. A small redistribution tax gives a stable spread.','Lorenz curve; Gini line; top-1 % share','Hayes (2002); Boghosian',1,'S'],
+['soc','Voting systems','Does the counting method choose the winner?','Voters and candidates sit on a 1D or 2D opinion map. Each voter prefers near candidates.',['method: plurality / IRV / approval / Condorcet','candidate places','strategic share'],'The same voters elect different winners. Plurality shows the spoiler effect. IRV shows center squeeze.','Winner map by voter centre; ballot counts per round','Simulating alternate voting systems',0,'M'],
+['soc','Segregation from mild bias','How do small preferences make a split city?','Blobs on a grid move if fewer than T % of neighbours share their colour.',['threshold T','empty share','two or three groups'],'With T near 30 %, the city still splits into strong clusters. No blob wants that result.','Segregation index; grid view','Schelling (1971)',1,'S'],
+['soc','Tragedy of the commons','Why do shared fish stocks collapse?','Fishers take fish from a stock that regrows logistically. Each fisher chooses a catch effort.',['regrowth rate','greed','quota / rules on/off'],'Selfish effort crashes the stock and income. A quota or community rules keep both high for longer.','Stock vs catch; income per fisher','Hardin (1968); Ostrom (1990)',1,'M'],
+['soc','Opinions and echo chambers','Why do groups polarise?','Two blobs talk only if their opinions are close (within ε). Then they move a bit closer.',['open-mindedness ε','network type','stubborn share'],'Large ε gives one consensus. Small ε gives 2–3 camps that never mix. A few stubborn blobs pull the crowd.','Opinion trace plot (all agents over time); cluster count','Deffuant et al. (2000)',1,'M'],
+['info','Epidemics and herd immunity','When does a disease die out or stay?','Blobs are S, I or R. Infection on contact with chance p. Recovery after k days.',['R₀','vaccination %','distancing','waning immunity'],'If R₀ × susceptible share < 1, the disease dies out. Waning immunity makes it endemic. Herd immunity needs 1 − 1/R₀ vaccinated.','SIR stacked area with ODE overlay; R-effective line','Epidemic, Endemic, and Eradication Simulations',0,'M'],
+['info','Catch a cheater','How many coin flips prove a blob cheats?','Some blobs flip a biased coin. An inspector flips n times and accuses above a threshold.',['flips n','threshold (α)','cheat bias','cheater share'],'Every threshold trades false accusations for missed cheaters. More flips reduce both. This is a hypothesis test.','Two binomial histograms with movable cut line; error-rate tiles','How To Catch A Cheater With Math · Overexplaining the binomial distribution',0,'S']
+];
+const g=document.getElementById('grid');
+g.innerHTML=S.map((s,i)=>`<article class="card" data-t="${s[0]}" data-n="${s[8]}">
+<div class="top"><span class="num" style="background:${C[s[0]]}">${i+1}</span><h3>${s[1]}</h3></div>
+<p class="q">${s[2]}</p>
+<dl><dt>Rules</dt><dd>${s[3]}</dd><dt>Knobs</dt><dd class="knobs">${s[4].map(k=>`<code>${k}</code>`).join('')}</dd><dt>Charts</dt><dd>${s[6]}</dd></dl>
+<p class="aha"><b>Surprise:</b> ${s[5]}</p>
+<div class="meta"><span class="src">${s[7]}</span>${s[8]?'<span class="new">new</span>':''}<span>effort ${s[9]}</span></div></article>`).join('');
+const cnt=document.getElementById('count');
+function filt(f){let n=0;g.querySelectorAll('.card').forEach(c=>{const on=f==='all'||(f==='new'?c.dataset.n==='1':c.dataset.t===f);c.hidden=!on;n+=on});cnt.textContent=n+' of 20';}
+document.querySelectorAll('.bar button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bar button').forEach(x=>x.setAttribute('aria-pressed',x===b));filt(b.dataset.f)});
+filt('all');
+
+const CAT=[['Why do things exist?','birth–death balance','#1'],['How life grows exponentially','exponential growth, extinction risk','#1'],['Mutations and the First Replicators','mutation, faster replicators win','#2'],['Simulating Competition and Logistic Growth','carrying capacity, exclusion','#2'],['Simulating Natural Selection','speed / size / sense trade-off','#3'],["What's a \"selfish gene\"?",'replicator strategies overview','#9–#11'],['Simulating Supply and Demand','market equilibrium, surplus','#13'],['Simulating the Evolution of Aggression','Hawk–Dove, mixed ESS','#6'],['Simulating Foraging Decisions','production frontier, diminishing utility','#5'],['Epidemic, Endemic, and Eradication Simulations','SIR, R₀, herd immunity','#19'],['Simulating alternate voting systems','plurality, IRV, approval','#15'],['How I deceived myself','error in Hamilton video, bias','#10 (care note)'],['Simulating Green Beard Altruism','recognition-based altruism','#9'],['Simulating the Evolution of Sacrificing for Family',"Hamilton's rule",'#10'],['Coin Flip Cheaters (game)','judging a biased coin','#20'],['How To Catch A Cheater With Math','hypothesis tests, error rates','#20'],['How many people might ever exist','long-term estimate (essay)','not used'],['Overexplaining the binomial distribution','binomial formula','#20'],['Simulating the Evolution of Teamwork','stag hunt, Nash, ESS','#8'],['Simulating the Evolution of Rock, Paper, Scissors','cyclic dominance','#7'],['Simulating the Evolution of Aging','mutation accumulation, pleiotropy','#4'],['Simulating a single brain cell','perceptron, XOR limit','not used'],['Taking AI Doom Seriously','AI risk (essay)','not used']];
+document.getElementById('cat').innerHTML=CAT.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="n">${r[2]}</td></tr>`).join('');
+
+// Hero: tiny Hawk–Dove day loop
+(function(){
+  const cv=document.getElementById('arena'),x=cv.getContext('2d'),W=640,H=480,V=2,Cc=3;
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  let blobs=[],day=0,t=0,sites=[];
+  for(let i=0;i<40;i++)blobs.push({h:i<4,x:W/2,y:H/2,tx:0,ty:0});
+  function newDay(){
+    day++;const n=Math.max(8,Math.round(blobs.length*0.6));
+    sites=[];for(let i=0;i<n;i++){const a=Math.random()*6.283,r=40+Math.random()*170;sites.push({x:W/2+Math.cos(a)*r*1.3,y:H/2+Math.sin(a)*r,o:[]});}
+    blobs.sort(()=>Math.random()-.5).forEach(b=>{const s=sites[Math.floor(Math.random()*sites.length)];if(s.o.length<2){s.o.push(b);b.s=s;b.tx=s.x+(s.o.length===1?-9:9);b.ty=s.y;}else{b.s=null;b.tx=b.x;b.ty=b.y;}});
+  }
+  function settle(){
+    const next=[];
+    blobs.forEach(b=>{let f=0;const s=b.s;if(s){const o=s.o.find(z=>z!==b);if(!o)f=V;else if(b.h&&o.h)f=(V-Cc)/2+1;else if(b.h)f=V;else if(o.h)f=0;else f=V/2;}
+      const k=f>=2?2:f>=1?1:(Math.random()<f?1:0);
+      for(let i=0;i<k;i++)next.push({h:b.h,x:b.x,y:b.y});});
+    blobs=next.slice(0,400);if(blobs.length<10)for(let i=0;i<20;i++)blobs.push({h:Math.random()<.5,x:W/2,y:H/2});
+    const hs=blobs.filter(b=>b.h).length/blobs.length;
+    document.getElementById('stat').textContent='day '+day+' · hawk share '+Math.round(hs*100)+'% (theory '+Math.round(V/Cc*100)+'%)';
+  }
+  newDay();
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function frame(){
+    t++;
+    if(t%90===0){settle();newDay();}
+    blobs.forEach(b=>{b.x+=(b.tx-b.x)*.08;b.y+=(b.ty-b.y)*.08;});
+    x.fillStyle=css('--paper');x.fillRect(0,0,W,H);
+    x.fillStyle=css('--green');sites.forEach(s=>{x.beginPath();x.arc(s.x,s.y,5,0,6.283);x.fill();});
+    const hb=css('--orange'),db=css('--blue'),ink=css('--ink');
+    blobs.forEach(b=>{x.fillStyle=b.h?hb:db;x.beginPath();x.arc(b.x,b.y,7,0,6.283);x.fill();x.fillStyle=ink;x.fillRect(b.x-3,b.y-2,1.6,2.4);x.fillRect(b.x+1.4,b.y-2,1.6,2.4);});
+    if(!still)requestAnimationFrame(frame);
+  }
+  frame();
+  if(still)setInterval(()=>{settle();newDay();t=0;for(let i=0;i<40;i++){blobs.forEach(b=>{b.x+=(b.tx-b.x)*.08;b.y+=(b.ty-b.y)*.08;});}frame();},1500);
+})();
+</script>
+</body>
+</html>
